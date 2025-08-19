@@ -34,7 +34,7 @@ float squareroot(const int kv) //наверное можно попроще, н�
 {
     float root, r;
     float min = kv;
-    for (root = 0; root<=kv; root+=0.1)
+    for (root = 0; root<=kv; root+=0.01)
     {
         float mod = (root*root>kv)?(root*root-kv):(kv-root*root);
         if (mod<min)
@@ -69,4 +69,5 @@ void output(const int a, const int b, const int c, const int flag)
         case 4: printf("2 корня:\n x = %.2f\n x = %.2f\n", (float)(-b+squareroot(b*b-4*a*c))/(2*a), (float)(-b-squareroot(b*b-4*a*c))/(2*a)); break;
         default: printf("корней нет\n");
     }
+
 }

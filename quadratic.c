@@ -1,4 +1,4 @@
-//решает квадратные уравнения с тосностью до 2-го знака после запятой
+//решает квадратные уравнения с точностью до 2-го знака после запятой
 #include <stdio.h>
 
 int input(float*, float*, float*);
@@ -42,7 +42,7 @@ float squareroot(float const square)
     if (square < 1)
         high = 1;
 
-    while ((high - low) > 0.001)
+    while ((high - low) > 0.01)
     {
         float mid = (low + high) / 2;
         if (mid * mid < square)
@@ -51,21 +51,15 @@ float squareroot(float const square)
             high = mid;
     }
 
-    low *= 100;
-    low += 0.5;
-    variable_int = low;
-    low = variable_int / 100;
-
     return low;
 }
 
 void findsolution(const float a, const float b, const float c, int * ptrway_of_solution)
 {
-    double d = b * b - 4 * a * c;
-    printf("%f ", d);
+    float d = b * b - 4 * a * c;
     if (a == 0 && b == 0 && c == 0)
         *ptrway_of_solution = 1;
-    else if ((a == 0 && b != 0 && c != 0) || (a == 0 && c == 0 && b != 0))
+    else if (a == 0 && b != 0 && d != 0)
         *ptrway_of_solution = 2; 
     else if (d == 0 && a != 0)
         *ptrway_of_solution = 3;
@@ -75,14 +69,13 @@ void findsolution(const float a, const float b, const float c, int * ptrway_of_s
 
 void output(const float a, const float b, const float c, const int way_of_solution)
 {
-    double sqrt_d = squareroot(b * b - 4 * a * c);
-    printf("%f", sqrt_d);
+    float sqrt_d = squareroot(b * b - 4 * a * c);
     switch(way_of_solution)
     {
         case 1: printf("Тяжело...\n корней бесконечно много\n"); break;
-        case 2: printf("x = %.2f\n", (float)-c/b); break;
-        case 3: printf("1 корень: x = %.2f\n", (float)-b/(2*a)); break;
-        case 4: printf("2 корня:\n x = %.2f\n x = %.2f\n", (float)(-b+sqrt_d)/(2*a), (float)(-b-sqrt_d)/(2*a)); break;
+        case 2: printf("x = %.2f\n", (float)-c / b == 0 ? 0 : -c / b); break;
+        case 3: printf("1 корень: x = %.2f\n", (float)-b / (2 * a) == 0 ? 0 : -b / (2 * a)); break;
+        case 4: printf("2 корня:\n x = %.2f\n x = %.2f\n", (float)(-b + sqrt_d) / (2 * a), (float)(-b - sqrt_d) / (2 * a)); break;
         default: printf("корней нет\n");
     }
 }

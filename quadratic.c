@@ -1,73 +1,88 @@
-//решает квадратные уравнения
+//решает квадратные уравнения с тосностью до 2-го знака после запятой
 #include <stdio.h>
 
-int input(int*, int*, int*);
-float squareroot(int);
-void mathpart(int, int, int, int*);
-void output(int, int, int, int);
+int input(float*, float*, float*);
+float squareroot(float);
+void findsolution(float, float, float, int*);
+void output(float, float, float, int);
 
 int main()
 {
-    int a, b, c, count, flag;
-    a = b = c = count = flag = 0;
+    float a = 0;
+    float b = 0;
+    float c = 0;
+    int count_inputnum = 0;
+    int way_of_solution = 0; 
 
-    count = input(&a, &b, &c);
+    count_inputnum = input(&a, &b, &c);
 
-    while (count==3)
+    while (count_inputnum==3)
     {
-        mathpart(a, b, c, &flag);
-        output(a, b, c, flag);
-        count = input(&a, &b, &c);
+        findsolution(a, b, c, &way_of_solution);
+        output(a, b, c, way_of_solution);
+        count_inputnum = input(&a, &b, &c);
     }
 
     return 0;
 }
 
-int input(int *yka, int *ykb, int *ykc)
+int input(float *ptra, float *ptrb, float *ptrc)
 {
-    printf("Введите через пробел целые коэффициенты a, b, c для квадратного уравнения вида ax^2 + bx + c = 0\n");
+    printf("Введите через пробел коэффициенты a, b, c для квадратного уравнения вида ax^2 + bx + c = 0\n");
     printf("Для завершения программы введите любую букву (например q)\n");
-    return scanf("%d%d%d", &(*yka), &(*ykb), &(*ykc));
+    return scanf("%f%f%f", ptra, ptrb, ptrc);
 }
 
-float squareroot(const int kv) //наверное можно попроще, но я не знаю как, поэтому написала функцию приближенного извлечения корня
+float squareroot(float const square) 
 {
-    float root, r;
-    float min = kv;
-    for (root = 0; root<=kv; root+=0.01)
+    float low = 0;
+    float high = square;
+    int variable_int;
+
+    if (square < 1)
+        high = 1;
+
+    while ((high - low) > 0.001)
     {
-        float mod = (root*root>kv)?(root*root-kv):(kv-root*root);
-        if (mod<min)
-        {
-            min = mod;
-            r = root;
-        }
+        float mid = (low + high) / 2;
+        if (mid * mid < square)
+            low = mid;
+        else
+            high = mid;
     }
-    return r;
+
+    low *= 100;
+    low += 0.5;
+    variable_int = low;
+    low = variable_int / 100;
+
+    return low;
 }
 
-void mathpart(const int a, const int b, const int c, int * ykflag)
+void findsolution(const float a, const float b, const float c, int * ptrway_of_solution)
 {
-    int d = b*b-4*a*c;
-    if (a==0 && b==0 && c==0)
-        *ykflag = 1;
-    else if ((a==0 && b!=0 && c!=0) || (a==0 && c==0 && b!=0))
-        *ykflag = 2; 
-    else if (d==0 && a!=0)
-        *ykflag = 3;
-    else if (d>0 && a!=0)
-        *ykflag = 4;
+    double d = b * b - 4 * a * c;
+    printf("%f ", d);
+    if (a == 0 && b == 0 && c == 0)
+        *ptrway_of_solution = 1;
+    else if ((a == 0 && b != 0 && c != 0) || (a == 0 && c == 0 && b != 0))
+        *ptrway_of_solution = 2; 
+    else if (d == 0 && a != 0)
+        *ptrway_of_solution = 3;
+    else if (d > 0 && a != 0)
+        *ptrway_of_solution = 4;
 }
 
-void output(const int a, const int b, const int c, const int flag)
+void output(const float a, const float b, const float c, const int way_of_solution)
 {
-    switch(flag)
+    double sqrt_d = squareroot(b * b - 4 * a * c);
+    printf("%f", sqrt_d);
+    switch(way_of_solution)
     {
         case 1: printf("Тяжело...\n корней бесконечно много\n"); break;
         case 2: printf("x = %.2f\n", (float)-c/b); break;
         case 3: printf("1 корень: x = %.2f\n", (float)-b/(2*a)); break;
-        case 4: printf("2 корня:\n x = %.2f\n x = %.2f\n", (float)(-b+squareroot(b*b-4*a*c))/(2*a), (float)(-b-squareroot(b*b-4*a*c))/(2*a)); break;
+        case 4: printf("2 корня:\n x = %.2f\n x = %.2f\n", (float)(-b+sqrt_d)/(2*a), (float)(-b-sqrt_d)/(2*a)); break;
         default: printf("корней нет\n");
     }
-
 }

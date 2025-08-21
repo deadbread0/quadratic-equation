@@ -103,7 +103,7 @@ void BodyOfProgramm()
         count_inputnum = input(&a, &b, &c);
     }
     char last_notright_input = getanswer();
-    printf("Вы точно хотите выйти из программы?\n");
+    printf("Вы точно хотите выйти из программы? (y - yes, n - no)\n");
     char answer = getanswer();
     if (answer == 'n')
         BodyOfProgramm();

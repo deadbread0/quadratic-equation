@@ -22,10 +22,10 @@ void FindSolution(struct ParametersOfTheEquation*);
 void Output(struct ParametersOfTheEquation*);
 bool GetAnswer();
 int ComparisonDouble(double, double);
-void InputAnswerInMass(char*);
+void CopyBufferInput(char*);
 void BufferCleaning();
-void tests();
-double Mod(double num);
+void Tests();
+double Mod(double);
 int OneTest(struct ParametersOfTheEquation);
 
 enum RootsAmount {
@@ -44,23 +44,22 @@ int main()
 {
     int count_inputnum = 0;
     bool flag = true;
-    const int count_abc = 3;//выносить в define?? A
+    const int COUNT_ABC = 3;
 
-    struct ParametersOfTheEquation struct_ptr = {NAN, 0, 0, 0, 0, 0};
-    tests();
+    struct ParametersOfTheEquation struct_ptr = {NAN, NAN, NAN, 0, NAN, NAN};
+    Tests();
 
     while (flag)
     {
         count_inputnum = Input(&struct_ptr);
 
-        while (count_inputnum == count_abc)
+        while (count_inputnum == COUNT_ABC)
         {
 
             FindSolution(&struct_ptr);
             Output(&struct_ptr);
             count_inputnum = Input(&struct_ptr);
         }
-        //BufferCleaning(); input
         flag = GetAnswer();
     }
 
@@ -69,15 +68,30 @@ int main()
 
 int Input(struct ParametersOfTheEquation *struct_ptr)
 {
-    double a = 0, b = 0, c = 0;
-    printf("Введите через пробел коэффициенты a, b, c для квадратного уравнения вида ax^2 + bx + c = 0\n");
-    printf("Для завершения программы введите любую букву (например q)\n");
-    int count_abc = 0;
-    count_abc = scanf("%lf%lf%lf", &a, &b, &c);
-    struct_ptr->a = a;
-    struct_ptr->b = b;
-    struct_ptr->c = c;
-    return count_abc;
+    assert(struct_ptr != nullptr);
+    while (true)
+    {
+        double a = 0, b = 0, c = 0;
+
+        printf("Введите через пробел коэффициенты a, b, c для квадратного уравнения вида ax^2 + bx + c = 0\n");
+        printf("Для завершения программы введите любую букву (например q)\n");
+
+        int count_abc = 0;
+        char ch = 0;
+        count_abc = scanf("%lf%lf%lf", &a, &b, &c);
+        //BufferCleaning();
+
+        if (ch = getchar() != '\n')
+            return 0;
+        else
+            continue;
+
+        BufferCleaning();
+        struct_ptr->a = a;
+        struct_ptr->b = b;
+        struct_ptr->c = c;
+        return count_abc;
+    }
 }
 
 double SquareRoot(const double square) 
@@ -109,32 +123,36 @@ void FindSolution(struct ParametersOfTheEquation *struct_ptr)
     double a0 = struct_ptr->a;
     double b0 = struct_ptr->b;
     double c0 = struct_ptr->c;
+    const int ZERO0 = 0;
 
     double d = (b0 * b0) - (4 * a0 * c0);
     double sqrt_d = SquareRoot(d);
-    const int ZERO0 = 0;
+    int comp_a = ComparisonDouble(a0, ZERO0);
+    int comp_b = ComparisonDouble(b0, ZERO0);
+    int comp_c = ComparisonDouble(c0, ZERO0);
+    int comp_d = ComparisonDouble(d, ZERO0);
 
-    if (ComparisonDouble(a0, ZERO0) == FIRST_EQUAL_TO_SECOND && ComparisonDouble(b0, ZERO0) == FIRST_EQUAL_TO_SECOND && ComparisonDouble(c0, ZERO0) == FIRST_EQUAL_TO_SECOND)
-        (struct_ptr->amount_of_solutions) = INF; //
-    else if (ComparisonDouble(a0, ZERO0) == FIRST_EQUAL_TO_SECOND && ComparisonDouble(b0, ZERO0) != FIRST_EQUAL_TO_SECOND)
+    if (comp_a == FIRST_EQUAL_TO_SECOND && comp_b == FIRST_EQUAL_TO_SECOND && comp_c == FIRST_EQUAL_TO_SECOND)
+        (struct_ptr->amount_of_solutions) = INF; 
+    else if (comp_a == FIRST_EQUAL_TO_SECOND && comp_b != FIRST_EQUAL_TO_SECOND)
     {
         (struct_ptr->amount_of_solutions) = ONE;
         double x = -c0 / b0;
         (struct_ptr->x1) = (ComparisonDouble(x, ZERO0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
     }
-    else if (ComparisonDouble(d, ZERO0) == FIRST_EQUAL_TO_SECOND && ComparisonDouble(a0, ZERO0) != FIRST_EQUAL_TO_SECOND)
+    else if (comp_d == FIRST_EQUAL_TO_SECOND && comp_a != FIRST_EQUAL_TO_SECOND)
     {
         double x = -b0 / (2 * a0);
         struct_ptr->amount_of_solutions = ONE;
         (struct_ptr->x1) = (ComparisonDouble(x, ZERO0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
     }
-    else if (ComparisonDouble(d, ZERO0) == FIRST_GREATER_THAN_SECOND && ComparisonDouble(a0, ZERO0) != FIRST_EQUAL_TO_SECOND)
+    else if (comp_d == FIRST_GREATER_THAN_SECOND && comp_a != FIRST_EQUAL_TO_SECOND)
         {
             (struct_ptr->amount_of_solutions) = TWO;
             (struct_ptr->x1) = (-b0 - sqrt_d) / (2 * a0);
             (struct_ptr->x2) = (-b0 + sqrt_d) / (2 * a0);
         }
-    else if (ComparisonDouble(d, ZERO0) == FIRST_LESS_THAN_SECOND)
+    else if (comp_d == FIRST_LESS_THAN_SECOND)
         (struct_ptr->amount_of_solutions) = ZERO;
 
 }
@@ -142,6 +160,7 @@ void FindSolution(struct ParametersOfTheEquation *struct_ptr)
 void Output(struct ParametersOfTheEquation *struct_ptr)
 {
     assert(struct_ptr != nullptr);
+
     switch(struct_ptr->amount_of_solutions)
     {
         case INF: printf("Тяжело...\n корней бесконечно много\n"); break;
@@ -164,8 +183,8 @@ bool GetAnswer()
     const char *NEGATIVE_ANSWER = "no";
     const char *POSITIVE_ANSWER = "yes";
     printf("Вы точно хотите выйти из программы? (yes/no)\n");
-    InputAnswerInMass(choice);
-    //BufferCleaning();
+    BufferCleaning();
+    CopyBufferInput(choice);
 
     int negative = strncmp(choice, NEGATIVE_ANSWER, MAX_LEN_OF_WORD);
     int positive = strncmp(choice, POSITIVE_ANSWER, MAX_LEN_OF_WORD);
@@ -179,13 +198,13 @@ bool GetAnswer()
         else
         {
             printf("введите no или yes\n");
-            InputAnswerInMass(choice);
+            CopyBufferInput(choice);
             BufferCleaning();
         }
     }
 }
 
-void InputAnswerInMass(char *choice)//copybufferinput
+void CopyBufferInput(char *choice)
 {
     int i = 0;
     char ch;
@@ -198,29 +217,22 @@ void InputAnswerInMass(char *choice)//copybufferinput
 
 int ComparisonDouble(const double num1, const double num2)
 {
-    double mod = (num1 - num2 > 0) ? num1 - num2 : num2 - num1;//!!
+    double mod = Mod(num1 - num2);
     const double ACCURACY = 1e-9;
     if (mod < ACCURACY)
         return FIRST_EQUAL_TO_SECOND;
     else if (num1 - num2 > ACCURACY)
         return FIRST_GREATER_THAN_SECOND;
-    else //if (num2 - num1 > ACCURACY)
+    else
         return FIRST_LESS_THAN_SECOND;
 }
 
 double Mod(double num)
 {
-    const double ZERO0 = 0;
-    //double mod;
-    if (ComparisonDouble(num, ZERO0) == FIRST_GREATER_THAN_SECOND)//0
-        return num;
-    else if (ComparisonDouble(ZERO0, num) == FIRST_GREATER_THAN_SECOND)
-        return -num;
-    else
-        return ZERO0;
+    return (num >= 0) ? num : -num;
 }
 
-void tests()
+void Tests()
 {
 
     unsigned int count_right_answer = 0;
@@ -240,13 +252,11 @@ void tests()
     if (count_right_answer == len)
         printf("все норм\n");
 
-    //FindSolution(&struct_ptr_tests);
-
 }
 
 int OneTest(struct ParametersOfTheEquation mass_i)
 {
-    struct ParametersOfTheEquation struct_ptr_tests = {0, 0, 0, 0, 0, 0};
+    struct ParametersOfTheEquation struct_ptr_tests = {NAN, NAN, NAN, 0, NAN, NAN};
 
     struct_ptr_tests.a = mass_i.a;
     struct_ptr_tests.b = mass_i.b;
@@ -257,31 +267,10 @@ int OneTest(struct ParametersOfTheEquation mass_i)
          (ComparisonDouble(struct_ptr_tests.x2, mass_i.x2) == FIRST_EQUAL_TO_SECOND))
     {
         printf("вывод неправильного ответа!!\n"
-               "полученный ответ: %.3g, %.3g\n", struct_ptr_tests.x1, struct_ptr_tests.x2);
-        printf("ожидаемый ответ: %.3g, %.3g\n\n", mass_i.x1, mass_i.x2);
+               "полученный ответ: %.3g, %.3g\n"
+               "ожидаемый ответ: %.3g, %.3g\n\n", struct_ptr_tests.x1, struct_ptr_tests.x2, mass_i.x1, mass_i.x2);
         return 0;
     }
     return 1;
 }
-    //sizeof
-    /*for (int i = 0; i < 6; i++)
-    {
-        
-        int amount_of_solutions_tests = 0;
-        double x1_tests = 0, x2_tests = 0;
-        struct ParametersOfTheEquation struct_for_tests = {a[i], b[i], c[i], &amount_of_solutions_tests, &x1_tests, &x2_tests};
-        FindSolution(struct_for_tests);
-        if (*struct_for_tests.amount_of_solutions == ONE)
-        {
-            if (struct_for_tests.a * (*struct_for_tests.x1) * (*struct_for_tests.x1) + struct_for_tests.b * (*struct_for_tests.x1) + struct_for_tests.c == 0)
-                printf("ok ");
-        }
-        else if (*struct_for_tests.amount_of_solutions == TWO)
-        {
-            if ((struct_for_tests.a * (*struct_for_tests.x1) * (*struct_for_tests.x1) + struct_for_tests.b * (*struct_for_tests.x1) + struct_for_tests.c == 0) && (struct_for_tests.a * (*struct_for_tests.x2) * (*struct_for_tests.x2) + struct_for_tests.b * (*struct_for_tests.x2) + struct_for_tests.c == 0))
-                printf("ok ");
-        }
-        else
-            printf("ok ");
-    }
-}*/
+ 

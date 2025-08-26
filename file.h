@@ -12,11 +12,12 @@ struct ParametersOfTheEquation {
 struct ParametersOfFlags {
     const char *flag;
     const char *flg;
-    void (*ptr)(void);
+    void (*ptr)(const char*);
+    const char *instruction;
 
 };
 
-int Input(struct ParametersOfTheEquation*);
+int Input(struct ParametersOfTheEquation*);//в разные f.h
 double SquareRoot(double);
 void FindSolution(struct ParametersOfTheEquation*);
 void Output(struct ParametersOfTheEquation*);
@@ -24,13 +25,15 @@ bool GetAnswerAboutTheExit();
 int ComparisonDouble(double, double);
 void CopyBufferInput(char*);
 void CleanBuffer();
-void RunTests();
+void RunTests(const char *);
 double Mod(double);
 int OneTest(struct ParametersOfTheEquation*);
 int InputValidate();
-int UseFlags(const char*, struct ParametersOfFlags*);
-void Help();
-void ReadFile();
+int UseFlags(const char *, const char*, struct ParametersOfFlags*);
+void Help(const char *);
+void ReadFile(const char *);
+int InputFile(struct ParametersOfTheEquation*, FILE*);
+void Solver(const char *);
 
 enum RootsAmount {
     INF, 

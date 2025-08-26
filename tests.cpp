@@ -7,7 +7,7 @@
 
 #include "file.h"
 
-void RunTests()
+void RunTests(const char *input_flag)
 {
     struct ParametersOfTheEquation mass[] = {
         {           1,            0,            0, 1,   0, NAN},
@@ -25,7 +25,7 @@ void RunTests()
     unsigned int count_right_answer = 0;
 
     for (int i = 0; i < len; i++)
-        count_right_answer += OneTest(mass);
+        count_right_answer += OneTest(&mass[i]);
     if (count_right_answer == len)
         printf("ok, amount of right answers: %d\n", count_right_answer);
 

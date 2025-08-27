@@ -6,6 +6,7 @@
 #include <ctype.h>
 
 #include "file.h"
+#include "fun.h"
 
 void CleanBuffer()
 {

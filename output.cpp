@@ -6,6 +6,8 @@
 #include <ctype.h>
 
 #include "file.h"
+#include "fun.h"
+
 void Output(struct ParametersOfTheEquation *struct_ptr)
 {
     assert(struct_ptr != nullptr);

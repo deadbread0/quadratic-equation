@@ -6,6 +6,8 @@
 #include <ctype.h>
 
 #include "file.h"
+#include "fun.h"
+
 double SquareRoot(const double square) 
 {
     double low = 0;
@@ -81,7 +83,7 @@ void FindSolution(struct ParametersOfTheEquation *struct_ptr)
             (struct_ptr->x1) = (-b0 - sqrt_d) / (2 * a0);
             (struct_ptr->x2) = (-b0 + sqrt_d) / (2 * a0);
         }
-    else //if (comp_d == FIRST_LESS_THAN_SECOND)
+    else 
         (struct_ptr->amount_of_solutions) = ZERO;
 
 }

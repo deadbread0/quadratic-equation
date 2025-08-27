@@ -6,6 +6,8 @@
 #include <ctype.h>
 
 #include "file.h"
+#include "fun.h"
+
 int Input(struct ParametersOfTheEquation *struct_ptr)
 {
     assert(struct_ptr != nullptr);
@@ -65,7 +67,7 @@ int InputValidate()
         else if (isspace(ch))
             continue;
         else
-            return 0;//inputvalidate
+            return 0;
     }
     return 1;
 }

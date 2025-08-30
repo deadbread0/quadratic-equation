@@ -5,8 +5,8 @@
 #include <math.h>
 #include <ctype.h>
 
-#include "file.h"
-#include "fun.h"
+#include "input.h"
+
 
 int Input(struct ParametersOfTheEquation *struct_ptr)
 {

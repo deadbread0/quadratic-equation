@@ -5,10 +5,9 @@
 #include <math.h>
 #include <ctype.h>
 
-#include "file.h"
-#include "fun.h"
+#include "tests.h"
 
-void RunTests(const char *input_flag)
+void RunTests(const char *input_flag, const char *i)
 {
     struct ParametersOfTheEquation mass[] = {
         {           1,            0,            0, 1,   0, NAN},

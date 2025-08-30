@@ -5,13 +5,14 @@
 #include <math.h>
 #include <ctype.h>
 
-#include "file.h"
-#include "fun.h"
+#include "output.h"
+
 
 void Output(struct ParametersOfTheEquation *struct_ptr)
 {
     assert(struct_ptr != nullptr);
 
+    printf("Solution for %lgx*x + %lgx +%lg = 0:\n", struct_ptr->a, struct_ptr->b, struct_ptr->c);
     switch(struct_ptr->amount_of_solutions)
     {
         case INF:  printf("It's really hard...\n there are infinitely many roots\n"); break;

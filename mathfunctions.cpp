@@ -5,8 +5,7 @@
 #include <math.h>
 #include <ctype.h>
 
-#include "file.h"
-#include "fun.h"
+#include "mathfunctions.h"
 
 double SquareRoot(const double square) 
 {
@@ -47,6 +46,7 @@ double Mod(double num)
     return (num >= 0) ? num : -num;
 }   
 
+
 void FindSolution(struct ParametersOfTheEquation *struct_ptr)
 {
     assert(struct_ptr != nullptr);
@@ -54,14 +54,13 @@ void FindSolution(struct ParametersOfTheEquation *struct_ptr)
     double a0 = struct_ptr->a;
     double b0 = struct_ptr->b;
     double c0 = struct_ptr->c;
-    const int ZERO0 = 0;
 
     double d = (b0 * b0) - (4 * a0 * c0);
     double sqrt_d = SquareRoot(d);
-    int comp_a = ComparisonDouble(a0, ZERO0);
-    int comp_b = ComparisonDouble(b0, ZERO0);
-    int comp_c = ComparisonDouble(c0, ZERO0);
-    int comp_d = ComparisonDouble(d, ZERO0);
+    int comp_a = ComparisonDouble(a0, 0);
+    int comp_b = ComparisonDouble(b0, 0);
+    int comp_c = ComparisonDouble(c0, 0);
+    int comp_d = ComparisonDouble(d, 0);
 
     if (comp_a == FIRST_EQUAL_TO_SECOND && comp_b == FIRST_EQUAL_TO_SECOND && comp_c == FIRST_EQUAL_TO_SECOND)
         (struct_ptr->amount_of_solutions) = INF; 
@@ -69,13 +68,13 @@ void FindSolution(struct ParametersOfTheEquation *struct_ptr)
     {
         (struct_ptr->amount_of_solutions) = ONE;
         double x = -c0 / b0;
-        (struct_ptr->x1) = (ComparisonDouble(x, ZERO0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
+        (struct_ptr->x1) = (ComparisonDouble(x, 0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
     }
     else if (comp_d == FIRST_EQUAL_TO_SECOND && comp_a != FIRST_EQUAL_TO_SECOND)
     {
         double x = -b0 / (2 * a0);
         struct_ptr->amount_of_solutions = ONE;
-        (struct_ptr->x1) = (ComparisonDouble(x, ZERO0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
+        (struct_ptr->x1) = (ComparisonDouble(x, 0) == FIRST_EQUAL_TO_SECOND) ? 0 : x;
     }
     else if (comp_d == FIRST_GREATER_THAN_SECOND && comp_a != FIRST_EQUAL_TO_SECOND)
         {
